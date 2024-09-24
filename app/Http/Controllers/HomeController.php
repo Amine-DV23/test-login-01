@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $orders = Order::all(); // احصل على جميع الطلبات
+        $orders = Order::all();
         return view('home', compact('orders'));
     }
 

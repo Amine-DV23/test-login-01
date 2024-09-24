@@ -1,66 +1,5 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        background-color: #f0f0f0;
-    }
-
-    header {
-        background-color: #4CAF50;
-        color: white;
-        text-align: center;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-
-    section {
-        background-color: white;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    form {
-        display: grid;
-        gap: 10px;
-    }
-
-    .form-row {
-        display: flex;
-        gap: 10px;
-    }
-
-    .form-row>* {
-        flex: 1;
-    }
-
-    input,
-    button,
-    textarea {
-        padding: 5px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th,
-    td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
 
 <head>
     <meta charset="utf-8">
@@ -73,6 +12,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -83,7 +23,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <h2>Amine</h2>
+                    <h2>Management System</h2>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -141,6 +81,39 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('#add-order form');
+            const productPriceInput = form.querySelector('input[name="product_price"]');
+            const quantityInput = form.querySelector('input[name="quantity"]');
+            const totalInput = form.querySelector('input[name="order_total"]');
+
+            function calculateTotal() {
+                const price = parseFloat(productPriceInput.value) || 0;
+                const quantity = parseInt(quantityInput.value) || 0;
+                const total = price * quantity;
+                totalInput.value = total.toFixed(2);
+
+            }
+
+            productPriceInput.addEventListener('input', calculateTotal);
+            quantityInput.addEventListener('input', calculateTotal);
+        });
+    </script>
+    <script>
+        window.onload = function() {
+            const message = document.getElementById('success-message');
+            if (message) {
+
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+            }
+        };
+    </script>
+
+
 </body>
 
 </html>

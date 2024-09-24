@@ -17,7 +17,7 @@ class Order extends Model
     protected $fillable = [
         'client_name',
         'product_name',
-        'product_price', // أضف هذا الحقل هنا
+        'product_price',
         'quantity',
         'total',
         'note',
