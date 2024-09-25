@@ -108,7 +108,7 @@
 
                 setTimeout(() => {
                     message.style.display = 'none';
-                }, 3000);
+                }, 2000);
             }
         };
     </script>

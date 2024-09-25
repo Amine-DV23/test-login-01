@@ -28,3 +28,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');

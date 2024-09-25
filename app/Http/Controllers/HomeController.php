@@ -27,5 +27,16 @@ class HomeController extends Controller
         $orders = Order::all();
         return view('home', compact('orders'));
     }
+    public function search(Request $request)
+    {
+        $product_id = $request->input('product_id');
+        $order = Order::find($product_id);
+
+        if ($order) {
+            return view('product_details', compact('order'));
+        } else {
+            return redirect()->back()->with('error', 'Product not found.');
+        }
+    }
 
 }

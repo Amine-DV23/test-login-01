@@ -5,7 +5,23 @@
     <body>
         <header>
             <h1>Order Management System</h1>
+            <div style="float: right; margin-top: -20px;">
+                <form action="{{ route('search') }}" method="GET">
+                    <input style="border-radius: 10px;" type="number" name="product_id" placeholder="Search by Product ID"
+                        required>
+                    <button style="border-radius: 50px;" type="submit">Search</button>
+                </form>
+            </div>
+
         </header>
+
+
+        @if (session('error'))
+            <div class="alert alert-danger"id="success-message">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <section id="add-order">
             <h2>Add New Order</h2>
             <form action="{{ route('orders.store') }}" method="POST">
@@ -29,6 +45,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>id</th>
                         <th>Client Name</th>
                         <th>Product Name</th>
                         <th>Price</th>
@@ -40,6 +57,7 @@
                 <tbody>
                     @foreach ($orders as $order)
                         <tr>
+                            <td>{{ $order->id }}</td>
                             <td>{{ $order->client_name }}</td>
                             <td>{{ $order->product_name }}</td>
                             <td>{{ $order->product_price }}</td>
@@ -55,7 +73,6 @@
                         {{ session('success') }}
                     </div>
                 @endif
-
 
 
             </table>
