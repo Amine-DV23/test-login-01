@@ -25,8 +25,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
+Route::get('/orders', [App\Http\Controllers\OrdersController::class, 'index'])->name('orders.index');
+
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-
-Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
+Route::get('/orders/search', [OrderController::class, 'index'])->name('orders.search');

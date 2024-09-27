@@ -102,3 +102,80 @@ th {
 .product-details a:hover {
     background-color: #0056b3;
 }
+
+
+.barsrsh {
+
+    border-radius: 10px;
+    width: 150px;
+    height: 30px;
+    margin-top: -20px;
+
+}
+
+.btnsrsh {
+
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -20px;
+
+
+}
+
+
+.product-card {
+    width: 200px;
+    height: 260px;
+    text-align: center;
+    margin: 40px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: inline-block;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+
+}
+
+.product-card:hover {
+    width: 202px;
+    height: 202px;
+    text-align: center;
+    margin: 40px;
+    box-shadow: #ccc;
+    transform: translateY(-10px);
+
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+}
+
+.productprice {
+    font-size: 18px;
+    color: rgb(0, 110, 255);
+
+
+}
+
+.product-info {
+    font-size: 14px;
+}
+
+.search-header {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.bordered {
+    border: 1px solid black;
+}
+
+.bordered td {
+    padding: 10px;
+}

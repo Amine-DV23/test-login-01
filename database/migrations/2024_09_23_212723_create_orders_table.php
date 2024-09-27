@@ -19,6 +19,7 @@ public function up()
         $table->integer('quantity');
         $table->decimal('total', 8, 2);
         $table->text('note')->nullable();
+        $table->string('product_image')->nullable(); // إضافة حقل الصورة
         $table->timestamps();
     });
 }

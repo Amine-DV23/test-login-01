@@ -21,5 +21,7 @@ class Order extends Model
         'quantity',
         'total',
         'note',
+        'product_image',
+
     ];
 }
