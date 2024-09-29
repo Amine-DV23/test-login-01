@@ -21,11 +21,11 @@ class HomeController extends Controller
 
         return view('home', compact('orders', 'totalOrders', 'totalValue'));
     }
-
     public function search(Request $request)
     {
-        $product_id = $request->input('product_id');
-        $order = Order::find($product_id);
+        $client_name = $request->input('client_name');
+
+        $order = Order::where('client_name', 'like', $client_name . '%')->first();
 
         if ($order) {
             return view('product_details', compact('order'));
@@ -33,4 +33,6 @@ class HomeController extends Controller
             return redirect()->back()->with('error', 'Product not found.');
         }
     }
+
+
 }

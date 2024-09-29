@@ -13,10 +13,11 @@
             <h1>Order Management System</h1>
             <div style="float: right; margin-top: -20px;">
                 <form action="{{ route('search') }}" method="GET" style="display: flex; align-items: center;">
-                    <input class="barsrsh" type="number" name="product_id" placeholder="Search by Product ID" required>
+                    <input class="barsrsh" type="text" name="client_name" placeholder="Search by client_name" required>
                     <button class="btnsrsh" type="submit">🔍</button>
                 </form>
             </div>
+
         </header>
 
         @if (session('error'))
