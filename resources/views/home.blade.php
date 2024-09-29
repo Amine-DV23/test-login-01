@@ -3,6 +3,12 @@
 @section('content')
 
     <body>
+        <section id="total-orders">
+            <h2>Order Summary</h2>
+            <p>Total Orders: <span id="order-count">{{ $totalOrders }}</span></p>
+            <p>Total Value: $<span id="total-value">{{ number_format($totalValue, 2) }}</span></p>
+        </section>
+
         <header>
             <h1>Order Management System</h1>
             <div style="float: right; margin-top: -20px;">
@@ -11,12 +17,16 @@
                     <button class="btnsrsh" type="submit">🔍</button>
                 </form>
             </div>
-
         </header>
 
         @if (session('error'))
             <div class="alert alert-danger" id="success-message">
                 {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success" id="success-message">
+                {{ session('success') }}
             </div>
         @endif
 
@@ -35,24 +45,16 @@
                 </div>
 
                 <textarea name="note" placeholder="Note" rows="3"></textarea>
-                <div class="form-row">
-                    <div class="form-row">
-                        <label for="product_image">Upload Product Image:</label>
-                        <input type="file" name="product_image" id="product_image" accept="image/*" required>
-                    </div>
-                    <button type="submit">Add Order</button>
-                </div>
+
+                <button type="submit">Add Order</button>
             </form>
         </section>
 
         <section id="order-list">
             <h2>Order List</h2>
-
             <table>
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>Product Image</th>
                         <th>Client Name</th>
                         <th>Product Name</th>
                         <th>Price</th>
@@ -64,17 +66,6 @@
                 <tbody>
                     @foreach ($orders as $order)
                         <tr class="bordered">
-                            <td>{{ $order->id }}</td>
-
-                            <td>
-                                @if ($order->product_image)
-                                    <img src="{{ asset('images/' . $order->product_image) }}" alt=" product_image"
-                                        style="width: 100px;">
-                                @else
-                                    no product_image
-                                @endif
-                            </td>
-
                             <td>{{ $order->client_name }}</td>
                             <td>{{ $order->product_name }}</td>
                             <td>{{ $order->product_price }} MAD</td>
@@ -85,14 +76,26 @@
                     @endforeach
                 </tbody>
             </table>
-
-            @if (session('success'))
-                <div class="alert alert-success" id="success-message">
-                    {{ session('success') }}
-                </div>
-            @endif
-
         </section>
 
     </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('#add-order form');
+            const productPriceInput = form.querySelector('input[name="product_price"]');
+            const quantityInput = form.querySelector('input[name="quantity"]');
+            const totalInput = form.querySelector('input[name="order_total"]');
+
+            function calculateTotal() {
+                const price = parseFloat(productPriceInput.value) || 0;
+                const quantity = parseInt(quantityInput.value) || 0;
+                const total = price * quantity;
+                totalInput.value = total.toFixed(2);
+            }
+
+            productPriceInput.addEventListener('input', calculateTotal);
+            quantityInput.addEventListener('input', calculateTotal);
+        });
+    </script>
 @endsection

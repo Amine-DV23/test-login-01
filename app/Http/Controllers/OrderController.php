@@ -46,6 +46,6 @@ class OrderController extends Controller
             'product_image' => $imageName
         ]);
 
-        return redirect()->back()->with('success', 'تم إضافة الطلب بنجاح.');
+        return redirect()->back()->with('success', 'The request has been added successfully.');
     }
 }

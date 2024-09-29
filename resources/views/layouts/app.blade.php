@@ -76,25 +76,7 @@
         </main>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('#add-order form');
-            const productPriceInput = form.querySelector('input[name="product_price"]');
-            const quantityInput = form.querySelector('input[name="quantity"]');
-            const totalInput = form.querySelector('input[name="order_total"]');
 
-            function calculateTotal() {
-                const price = parseFloat(productPriceInput.value) || 0;
-                const quantity = parseInt(quantityInput.value) || 0;
-                const total = price * quantity;
-                totalInput.value = total.toFixed(2);
-
-            }
-
-            productPriceInput.addEventListener('input', calculateTotal);
-            quantityInput.addEventListener('input', calculateTotal);
-        });
-    </script>
     <script>
         window.onload = function() {
             const message = document.getElementById('success-message');
