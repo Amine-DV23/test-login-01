@@ -46,10 +46,12 @@
                     <h2>Search Customer</h2>
                     <div class="search-container">
                         <input type="text" id="search-input" placeholder="Search for customer by name...">
-                        <button id="search-button">🔍</button> <!-- رمز البحث يمكن أن يكون أيقونة -->
+                        <button id="search-button" type="button">🔍</button> <!-- زر البحث -->
                     </div>
-                    <ul id="search-results" style="list-style-type: none; padding: 0;"></ul>
+                    <ul id="search-results" style="list-style-type: none; padding: 0; margin-top: 10px;"></ul>
+                    <!-- نتائج البحث -->
                 </section>
+
 
 
 
@@ -127,11 +129,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
             const searchResults = document.getElementById('search-results');
-            const customerNameField = document.querySelector('input[name="product_name"]');
             const customerInfo = document.getElementById('customer-info');
-            const orderList = document.getElementById('order-list'); // احصل على عنصر جدول الأوردر
 
+            // الخطوة 1: عرض قائمة النتائج عند الكتابة في خانة البحث
             searchInput.addEventListener('input', function() {
                 const query = searchInput.value;
 
@@ -139,32 +141,53 @@
                     fetch(`/search-customers?query=${query}`)
                         .then(response => response.json())
                         .then(data => {
-                            searchResults.innerHTML = '';
+                            searchResults.innerHTML = ''; // تفريغ النتائج القديمة
                             data.forEach(customer => {
                                 const li = document.createElement('li');
                                 li.textContent = customer.name;
                                 li.style.cursor = 'pointer';
+                                // عند الضغط على أحد الأسماء، يظهر في خانة البحث فقط
                                 li.addEventListener('click', function() {
-                                    // إظهار معلومات الزبون
-                                    document.getElementById('customer-name')
-                                        .textContent = customer.name;
-                                    document.getElementById('customer-address')
-                                        .textContent = customer.address;
-                                    document.getElementById('customer-phone')
-                                        .textContent = customer.phone;
-                                    document.getElementById('customer-note')
-                                        .textContent = customer.note || 'N/A';
-
-                                    // إخفاء جدول الأوردر وإظهار معلومات الزبون
-                                    customerInfo.style.display = 'block';
+                                    searchInput.value = customer.name;
                                     searchResults.innerHTML =
-                                        ''; // إزالة القائمة عند اختيار اسم
+                                        ''; // إزالة القائمة بعد اختيار الاسم
                                 });
                                 searchResults.appendChild(li);
                             });
                         });
                 } else {
-                    searchResults.innerHTML = '';
+                    searchResults.innerHTML = ''; // إخفاء النتائج إذا كانت الخانة فارغة
+                }
+            });
+
+            // الخطوة 2: عند الضغط على زر البحث، عرض المعلومات
+            searchButton.addEventListener('click', function() {
+                const query = searchInput.value;
+
+                if (query.length > 0) {
+                    fetch(`/search-customers?query=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                const customer = data[0]; // افتراض أن العميل الأول هو الهدف
+                                document.getElementById('customer-name').textContent = customer.name;
+                                document.getElementById('customer-address').textContent = customer
+                                    .address;
+                                document.getElementById('customer-phone').textContent = customer.phone;
+                                document.getElementById('customer-note').textContent = customer.note ||
+                                    'N/A';
+
+                                // إظهار معلومات الزبون
+                                customerInfo.style.display = 'block';
+                            } else {
+                                alert('No customer found.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching customer:', error);
+                        });
+                } else {
+                    alert('Please enter a customer name to search.');
                 }
             });
         });

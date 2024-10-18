@@ -216,3 +216,20 @@ th {
     justify-content: center;
     align-items: center;
 }
+
+#search-results {
+    max-height: 150px;
+    /* تحديد ارتفاع القائمة */
+    overflow-y: auto;
+    /* يسمح بالتمرير إذا كان هناك الكثير من النتائج */
+    background-color: white;
+    /* لون خلفية النتائج */
+    border: 1px solid #ccc;
+    /* حدود القائمة */
+    border-radius: 5px;
+    /* زوايا دائرية للقائمة */
+    margin-top: 5px;
+    /* مسافة بين خانة البحث والنتائج */
+    padding: 0;
+    /* إزالة التباعد الافتراضي */
+}
