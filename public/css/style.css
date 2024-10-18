@@ -180,3 +180,39 @@ th {
 .bordered td {
     padding: 10px;
 }
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#search-input {
+    width: 200px;
+    /* عرض خانة البحث */
+    height: 34px;
+    /* طول خانة البحث */
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+#search-button {
+    width: 40px;
+    /* عرض زر البحث */
+    height: 40px;
+    /* طول زر البحث */
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    /* يجعل الزر دائريًا */
+    border: none;
+    background-color: #3498db;
+    /* لون خلفية الزر */
+    border: 1px solid black;
+    /* لون النص أو الأيقونة داخل الزر */
+    font-size: 16px;
+    /* حجم الأيقونة أو النص داخل الزر */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

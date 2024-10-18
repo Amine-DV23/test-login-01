@@ -62,5 +62,14 @@ public function create()
         return redirect()->back()->with('success', 'تم تحديث معلومات الزبون بنجاح!');
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+
+        // البحث عن الأسماء التي تبدأ بالحرف المدخل
+        $customers = \App\Models\Customer::where('name', 'LIKE', "{$query}%")->get();
+
+        return response()->json($customers);
+    }
 
 }

@@ -156,66 +156,6 @@
             cursor: pointer;
         }
 
-        .search-container {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .search-container input[type="text"] {
-            width: 200px;
-            padding: 10px;
-            margin-left: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-
-        .search-container button {
-            padding: 10px 15px;
-        }
-
-        .search-results-modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            top: 60px;
-            right: 75px;
-            width: 300px;
-            height: 100%;
-            padding-top: 40px;
-
-        }
-
-        .search-results-content {
-            margin: auto;
-            padding: 20px;
-            border-radius: 5px;
-            width: 50%;
-            max-height: 70%;
-            overflow-y: auto;
-            text-align: left;
-
-        }
-
-        .search-results-content h3 {
-            margin-bottom: 10px;
-        }
-
-        .search-results-content ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .search-results-content ul li {
-            padding: 10px;
-            background-color: #f8f9fa;
-            margin-bottom: 5px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .search-results-content ul li:hover {
-            background-color: #e2e6ea;
-        }
 
         .success-message {
             display: none;
@@ -223,16 +163,48 @@
             margin: 20px 20px;
             margin-top: -80px;
         }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            left: 100px;
+        }
+
+        #search-input {
+            width: 200px;
+            /* عرض خانة البحث */
+            height: 34px;
+            /* طول خانة البحث */
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        #search-button {
+            width: 40px;
+            /* عرض زر البحث */
+            height: 40px;
+            /* طول زر البحث */
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            /* يجعل الزر دائريًا */
+            border: none;
+            background-color: #3498db;
+            /* لون خلفية الزر */
+            border: 1px solid black;
+            /* لون النص أو الأيقونة داخل الزر */
+            font-size: 16px;
+            /* حجم الأيقونة أو النص داخل الزر */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 
 <body>
     <h1>إضافة زبون</h1>
-
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="ابحث عن زبون..." oninput="searchCustomers()">
-        <button type="button" onclick="searchCustomers()">بحث</button>
-    </div>
 
     <p class="success-message">{{ session('success') }}</p>
 
@@ -251,7 +223,42 @@
         <textarea id="note" name="note"></textarea>
 
         <button type="submit">إرسال</button>
+        <!-- جزء البحث -->
+        <section id="search-customer">
+            <h2>بحث عن زبون</h2>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search for customer by name...">
+                <button id="search-button">🔍</button>
+            </div>
+            <ul id="search-results" style="list-style-type: none; padding: 0;"></ul>
+        </section>
     </form>
+
+
+    <section id="customer-info" style="display: none;">
+        <h2>معلومات الزبون</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>الاسم</th>
+                    <th>العنوان</th>
+                    <th>الهاتف</th>
+                    <th>ملاحظة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="customer-name"></td>
+                    <td id="customer-address"></td>
+                    <td id="customer-phone"></td>
+                    <td id="customer-note"></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+
 
     <h1>قائمة الزبائن المسجلين</h1>
     <table id="customerTable">
@@ -266,13 +273,13 @@
         </thead>
         <tbody>
             @foreach ($customers as $customer)
-                <tr class="customer-row">
-                    <td class="customer-name">{{ $customer->name }}</td>
+                <tr>
+                    <td>{{ $customer->name }}</td>
                     <td>{{ $customer->address }}</td>
                     <td>{{ $customer->phone }}</td>
                     <td>{{ $customer->note }}</td>
                     <td>
-                        <button class="update-button" data-id="{{ $customer->id }}"
+                        <button class="update-button"
                             onclick="openModal({{ $customer->id }}, '{{ $customer->name }}', '{{ $customer->address }}', '{{ $customer->phone }}', '{{ $customer->note }}')">تحديث</button>
                         <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
                             style="display:inline;" onsubmit="showSuccessMessage(event)">
@@ -286,11 +293,15 @@
         </tbody>
     </table>
 
+
+
+
+    <!-- المودال لتحديث البيانات -->
     <div id="updateModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h1>تحديث معلومات الزبون</h1>
-            <form id="updateForm" action="" method="POST" onsubmit="showSuccessMessage(event)">
+            <form id="updateForm" method="POST" onsubmit="showSuccessMessage(event)">
                 @csrf
                 @method('PUT')
                 <label for="updateName">اسم الزبون:</label>
@@ -310,85 +321,76 @@
         </div>
     </div>
 
-    <div id="searchResultsModal" class="search-results-modal">
-        <div class="search-results-content">
-            <ul id="searchResultsList"></ul>
-        </div>
-    </div>
-
     <script>
         function openModal(id, name, address, phone, note) {
-            console.log(id);
-            const modal = document.getElementById('updateModal');
             document.getElementById('updateForm').action = '/customers/' + id;
             document.getElementById('updateName').value = name;
             document.getElementById('updateAddress').value = address;
             document.getElementById('updatePhone').value = phone;
             document.getElementById('updateNote').value = note;
-            modal.style.display = "block";
+            document.getElementById('updateModal').style.display = 'block';
         }
 
         function closeModal() {
-            const modal = document.getElementById('updateModal');
-            modal.style.display = "none";
-        }
-
-        function searchCustomers() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('.customer-row');
-            const searchResultsList = document.getElementById('searchResultsList');
-            searchResultsList.innerHTML = '';
-            rows.forEach(function(row) {
-                const name = row.querySelector('.customer-name').textContent.toLowerCase();
-                const id = row.querySelector('.update-button').getAttribute('data-id');
-
-                if (name.includes(input)) {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = name;
-                    listItem.setAttribute('data-id', id);
-                    listItem.onclick = function() {
-                        openModal(
-                            id,
-                            row.querySelector('.customer-name').textContent,
-                            row.querySelector('td:nth-child(2)').textContent,
-                            row.querySelector('td:nth-child(3)').textContent,
-                            row.querySelector('td:nth-child(4)').textContent
-                        );
-                        closeSearchResultsModal();
-                    };
-                    searchResultsList.appendChild(listItem);
-                }
-            });
-
-            if (searchResultsList.childNodes.length > 0) {
-                document.getElementById('searchResultsModal').style.display = 'block';
-            } else {
-                closeSearchResultsModal();
-            }
-        }
-
-        function closeSearchResultsModal() {
-            const modal = document.getElementById('searchResultsModal');
-            modal.style.display = "none";
+            document.getElementById('updateModal').style.display = 'none';
         }
 
         function showSuccessMessage(event) {
             event.preventDefault();
-
-            const form = event.target;
             const successMessage = document.querySelector('.success-message');
             successMessage.style.display = 'block';
-            successMessage.textContent = form.method === 'POST' ? 'تم  بنجاح!' :
-                'تم  بنجاح!';
+            successMessage.textContent = 'تمت العملية بنجاح!';
 
             setTimeout(() => {
-                form.submit();
+                event.target.submit();
             }, 2000);
 
             setTimeout(() => {
                 successMessage.style.display = 'none';
-            }, 2000);
+            }, 4000);
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            const customerInfo = document.getElementById('customer-info');
+
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value;
+
+                if (query.length > 0) {
+                    fetch(`/search-customers?query=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            searchResults.innerHTML = '';
+                            data.forEach(customer => {
+                                const li = document.createElement('li');
+                                li.textContent = customer.name;
+                                li.style.cursor = 'pointer';
+                                li.addEventListener('click', function() {
+                                    // إظهار معلومات الزبون
+                                    document.getElementById('customer-name')
+                                        .textContent = customer.name;
+                                    document.getElementById('customer-address')
+                                        .textContent = customer.address;
+                                    document.getElementById('customer-phone')
+                                        .textContent = customer.phone;
+                                    document.getElementById('customer-note')
+                                        .textContent = customer.note || 'N/A';
+
+                                    // إخفاء جدول الأوردر وإظهار معلومات الزبون
+                                    customerInfo.style.display = 'block';
+                                    searchResults.innerHTML =
+                                        ''; // إزالة القائمة عند اختيار اسم
+                                });
+                                searchResults.appendChild(li);
+                            });
+                        });
+                } else {
+                    searchResults.innerHTML = '';
+                }
+            });
+        });
     </script>
 </body>
 

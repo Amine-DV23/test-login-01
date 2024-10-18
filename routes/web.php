@@ -47,3 +47,4 @@ Route::get('/customers/create', [CustomerController::class, 'create'])->name('cu
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::resource('customers', CustomerController::class);
+Route::get('/search-customers', [CustomerController::class, 'search']);
