@@ -349,12 +349,13 @@
                 successMessage.style.display = 'none';
             }, 4000);
         }
-
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('search-input');
             const searchResults = document.getElementById('search-results');
             const customerInfo = document.getElementById('customer-info');
+            const searchButton = document.getElementById('search-button');
 
+            // عند إدخال نص في خانة البحث
             searchInput.addEventListener('input', function() {
                 const query = searchInput.value;
 
@@ -362,32 +363,48 @@
                     fetch(`/search-customers?query=${query}`)
                         .then(response => response.json())
                         .then(data => {
-                            searchResults.innerHTML = '';
+                            searchResults.innerHTML = ''; // مسح النتائج السابقة
                             data.forEach(customer => {
                                 const li = document.createElement('li');
                                 li.textContent = customer.name;
                                 li.style.cursor = 'pointer';
                                 li.addEventListener('click', function() {
-                                    // إظهار معلومات الزبون
-                                    document.getElementById('customer-name')
-                                        .textContent = customer.name;
-                                    document.getElementById('customer-address')
-                                        .textContent = customer.address;
-                                    document.getElementById('customer-phone')
-                                        .textContent = customer.phone;
-                                    document.getElementById('customer-note')
-                                        .textContent = customer.note || 'N/A';
-
-                                    // إخفاء جدول الأوردر وإظهار معلومات الزبون
-                                    customerInfo.style.display = 'block';
+                                    // تحديث خانة البحث بالاسم المحدد
+                                    searchInput.value = customer.name;
                                     searchResults.innerHTML =
-                                        ''; // إزالة القائمة عند اختيار اسم
+                                    ''; // إزالة القائمة بعد اختيار الاسم
                                 });
                                 searchResults.appendChild(li);
                             });
                         });
                 } else {
-                    searchResults.innerHTML = '';
+                    searchResults.innerHTML = ''; // إذا كانت خانة البحث فارغة
+                }
+            });
+
+            // عند الضغط على زر البحث
+            searchButton.addEventListener('click', function(event) {
+                event.preventDefault(); // منع إعادة تحميل الصفحة
+                const query = searchInput.value;
+
+                if (query.length > 0) {
+                    fetch(`/search-customers?query=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                const customer = data[0]; // افتراض أن النتيجة واحدة
+                                // إظهار معلومات الزبون
+                                document.getElementById('customer-name').textContent = customer.name;
+                                document.getElementById('customer-address').textContent = customer
+                                    .address;
+                                document.getElementById('customer-phone').textContent = customer.phone;
+                                document.getElementById('customer-note').textContent = customer.note ||
+                                    'N/A';
+                                customerInfo.style.display = 'block'; // إظهار معلومات الزبون
+                            } else {
+                                alert('لا توجد نتائج'); // تنبيه إذا لم يتم العثور على أي نتائج
+                            }
+                        });
                 }
             });
         });
