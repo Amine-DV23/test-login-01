@@ -19,7 +19,6 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'client_name' => 'required|string|max:255',
             'product_name' => 'required|string|max:255',
             'product_price' => 'required|numeric',
             'quantity' => 'required|integer',
@@ -37,7 +36,6 @@ class OrderController extends Controller
         }
 
         Order::create([
-            'client_name' => $request->input('client_name'),
             'product_name' => $request->input('product_name'),
             'product_price' => $request->input('product_price'),
             'quantity' => $request->input('quantity'),

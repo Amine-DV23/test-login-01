@@ -11,12 +11,7 @@
 
         <header>
             <h1>Order Management System</h1>
-            <div style="float: right; margin-top: -20px;">
-                <form action="{{ route('search') }}" method="GET" style="display: flex; align-items: center;">
-                    <input class="barsrsh" type="text" name="client_name" placeholder="Search by client_name" required>
-                    <button class="btnsrsh" type="submit">🔍</button>
-                </form>
-            </div>
+
 
         </header>
 
@@ -36,7 +31,6 @@
             <form action="{{ route('orders.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-row">
-                    <input type="text" name="client_name" placeholder="Client Name" required>
                     <input type="text" name="product_name" placeholder="Product Name" required>
                 </div>
                 <div class="form-row">
@@ -56,7 +50,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Client Name</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -67,7 +60,6 @@
                 <tbody>
                     @foreach ($orders as $order)
                         <tr class="bordered">
-                            <td>{{ $order->client_name }}</td>
                             <td>{{ $order->product_name }}</td>
                             <td>{{ $order->product_price }} MAD</td>
                             <td>{{ $order->quantity }}</td>
